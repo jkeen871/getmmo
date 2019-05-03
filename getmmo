@@ -37,7 +37,5 @@ if [ "$customer" = "" ] && [ "$node" = "" ]; then
 	usage
 else 
 	awk -v node="$node" -v cust="$customer" -v environment="$environment" '$0 ~ node && $0 ~ cust && $0 ~ environment' $mmoconfigpath |sed -e"s/Host/ssh/g"
-#	awk -v node="$node" -v cust="$customer" -v environment="$environment" '/node/{print $0}' $mmoconfigpath
-	#echo $result | wc -l
 
 fi
