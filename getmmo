@@ -1,0 +1,43 @@
+#!/bin/bash
+
+mmoconfigpath=~/.ssh/mmo.config
+
+
+function usage(){
+	echo "    getmmo -c inspur -n cfg <-e prod>"
+	echo ""
+	echo "    -c Keyword for customer"
+	echo "    -n Keyword for node"
+	echo "    -o Keyword fo help narrow down the search"
+
+}
+
+
+while getopts "hc:n:e:" arg; do
+  case $arg in
+    h)
+     	usage
+        ;;
+    c)
+      customer=$OPTARG
+      ;;
+    n)
+      node=$OPTARG
+      ;;
+    e)
+      environment=$OPTARG
+      ;;
+
+  esac
+done
+if [ "$customer" = "" ] && [ "$node" = "" ]; then
+	echo 
+	echo "Customer or node not specified..."
+	echo
+	usage
+else 
+	awk -v node="$node" -v cust="$customer" -v environment="$environment" '$0 ~ node && $0 ~ cust && $0 ~ environment' $mmoconfigpath |sed -e"s/Host/ssh/g"
+#	awk -v node="$node" -v cust="$customer" -v environment="$environment" '/node/{print $0}' $mmoconfigpath
+	#echo $result | wc -l
+
+fi
